@@ -1,64 +1,182 @@
-# Nuxt Dashboard Template
+# Devin Proxy Hub
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+[![Nuxt 4](https://img.shields.io/badge/Nuxt-4-00DC82?logo=nuxt.js&logoColor=white)](https://nuxt.com)
+[![Vue 3](https://img.shields.io/badge/Vue-3-42B883?logo=vue.js&logoColor=white)](https://vuejs.org)
+[![OpenAI Compatible](https://img.shields.io/badge/API-OpenAI%20Compatible-412991)](https://platform.openai.com/docs/api-reference/chat)
+[![SQLite](https://img.shields.io/badge/Storage-SQLite-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
+[![License](https://img.shields.io/badge/license-MIT-black)](./LICENSE)
 
-Get started with the Nuxt dashboard template with multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more, powered by [Nuxt UI](https://ui.nuxt.com).
+Devin Proxy Hub is a local dashboard and proxy that makes Devin look like an OpenAI chat completion endpoint.
 
-- [Live demo](https://dashboard-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+It sits in front of the Devin API, accepts `POST /v1/chat/completions`, creates a Devin session, polls it, and turns the results into OpenAI-style responses. On top of that, it gives you a small admin UI for API key rotation, request history, and session inspection.
 
-<a href="https://dashboard-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-    <img alt="Nuxt Dashboard Template" src="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-  </picture>
-</a>
+## What it does
 
-> The dashboard template for Vue is on https://github.com/nuxt-ui-templates/dashboard-vue.
+- Exposes an OpenAI-compatible `POST /v1/chat/completions` route
+- Converts chat messages into a single Devin session prompt
+- Polls Devin session state and stores request history locally
+- Streams or returns OpenAI-style completion responses
+- Supports multiple Devin API keys with transparent failover
+- Keeps a local dashboard for keys, session logs, and raw payload inspection
+- Persists everything to a local SQLite file
 
-## Quick Start
+## Why this exists
 
-```bash [Terminal]
-npm create nuxt@latest -- -t ui/dashboard
-```
+If you want to point an OpenAI-compatible client at Devin, you usually end up writing glue code first. This project is that glue code, but with a usable UI and session history instead of a pile of scripts.
 
-## Deploy your own
+## Stack
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=dashboard&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fdashboard&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fdashboard-dark.png&demo-url=https%3A%2F%2Fdashboard-template.nuxt.dev%2F&demo-title=Nuxt%20Dashboard%20Template&demo-description=A%20dashboard%20template%20with%20multi-column%20layout%20for%20building%20sophisticated%20admin%20interfaces.)
+- Nuxt 4 + Vue 3
+- Nuxt UI + Tailwind CSS
+- Drizzle schema definitions
+- Local SQLite persistence via `sql.js`
+- Node deployment target via Nitro's `node-server` preset
 
-## Setup
+## Quick start
 
-Make sure to install the dependencies:
+### 1. Install dependencies
 
 ```bash
 pnpm install
 ```
 
-## Development Server
+### 2. Create your env file
 
-Start the development server on `http://localhost:3000`:
+```bash
+cp .env.example .env
+```
+
+### 3. Start the app
 
 ```bash
 pnpm dev
 ```
 
-## Production
+Open `http://localhost:3000` and add at least one Devin API key in the **API Keys** page before sending requests through the proxy.
 
-Build the application for production:
+## Configuration
+
+These values come from `.env`:
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `NUXT_PUBLIC_SITE_URL` | empty | Public site URL for generated metadata |
+| `DEVIN_API_BASE` | `https://api.devin.ai/v3` | Base URL for the Devin API |
+| `DEVIN_PROXY_SQLITE_PATH` | `sqlite.db` | Local SQLite file path |
+| `DEVIN_PROXY_POLLING_INTERVAL_MS` | `10000` | Devin polling interval |
+| `DEVIN_PROXY_COOLDOWN_MS` | `900000` | Cooldown for rate-limited keys |
+
+## Using the proxy
+
+Once you've added a valid Devin key and org ID in the dashboard, you can send requests to:
+
+```text
+POST /v1/chat/completions
+```
+
+Example:
 
 ```bash
+curl http://localhost:3000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "devin-proxy-hub",
+    "stream": false,
+    "messages": [
+      { "role": "user", "content": "Open the repo and explain the latest failure" }
+    ]
+  }'
+```
+
+The dashboard tracks the request, stores the generated prompt, and logs session events as Devin responds.
+
+## Dashboard pages
+
+- **Overview** — recent proxy activity and key health
+- **API Keys** — add, edit, reorder, disable, or remove Devin credentials
+- **Sessions** — inspect prompt text, session status, event logs, and raw payloads
+
+## Development commands
+
+```bash
+pnpm dev
+pnpm typecheck
+pnpm lint
+pnpm build
+pnpm preview
+pnpm db:generate
+pnpm db:migrate
+```
+
+## Deployment
+
+This app builds to a standard Nitro Node server, so deployment is straightforward.
+
+### Build for production
+
+```bash
+pnpm install
 pnpm build
 ```
 
-Locally preview production build:
+### Run the production server
 
 ```bash
-pnpm preview
+node .output/server/index.mjs
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+By default, Nitro reads `PORT` from the environment.
 
-## Renovate integration
+Example:
 
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+```bash
+PORT=3000 node .output/server/index.mjs
+```
+
+### Recommended production setup
+
+- Run it behind Caddy, Nginx, or another reverse proxy
+- Keep `.env` and `sqlite.db` on persistent storage
+- Back up `sqlite.db` if session history matters to you
+- Use process supervision such as `systemd`, PM2, Fly Machines, or a container platform
+
+### Minimal Linux deploy flow
+
+```bash
+git clone <your-repo>
+cd dashboard
+pnpm install
+cp .env.example .env
+# edit .env
+pnpm build
+PORT=3000 node .output/server/index.mjs
+```
+
+## Notes and limitations
+
+- This project is **OpenAI-compatible at the chat completions entry point**, not a full OpenAI API clone.
+- Key storage is masked in the UI, but credentials still live in a local database file on disk.
+- If no valid Devin key is available, the proxy returns a controlled error and records the failed attempt in session history.
+- Devin event shapes can vary. The proxy normalizes the common message, tool, and command patterns it can detect.
+
+## Project structure
+
+```text
+app/                 Nuxt dashboard UI
+server/api/          Dashboard backend endpoints
+server/routes/v1/    OpenAI-compatible proxy route
+server/utils/        DB, key rotation, session store, Devin bridge
+shared/              Shared TypeScript types
+```
+
+## Roadmap ideas
+
+- Better event-to-stream chunk mapping
+- Secret encryption at rest
+- Session retry controls from the dashboard
+- Docker packaging
+- Health and metrics endpoints
+
+## License
+
+MIT
