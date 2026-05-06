@@ -17,13 +17,8 @@ logs
 .DS_Store
 .fleet
 .idea
-sqlite.db
-sqlite.db-*
 
 # Local env files
 .env
 .env.*
 !.env.example
-
-# VSC
-.history
