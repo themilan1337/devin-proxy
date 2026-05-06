@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
-    '@nuxtjs/eslint-module',
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts'
   ],

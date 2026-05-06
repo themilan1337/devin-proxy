@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
 @import "tailwindcss" theme(static);
 @import "@nuxt/ui";
 
@@ -16,3 +18,16 @@
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
 }
+
+html, body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@custom-variant hover (&:hover);

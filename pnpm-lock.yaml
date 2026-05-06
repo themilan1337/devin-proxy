@@ -23,9 +23,6 @@ importers:
       '@nuxt/ui':
         specifier: ^4.7.1
         version: 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@tiptap/extensions@3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.17.3)(better-sqlite3@12.9.0)(drizzle-orm@0.45.2(@libsql/client@0.17.3)(@types/better-sqlite3@7.6.13)(@types/sql.js@1.4.11)(better-sqlite3@12.9.0)(sql.js@1.14.1)))(embla-carousel@8.6.0)(ioredis@5.10.1)(magicast@0.5.2)(tailwindcss@4.2.4)(typescript@6.0.3)(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3))(vue-router@5.0.6(@vue/compiler-sfc@3.5.33)(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))(yjs@13.6.30)(zod@4.4.3)
-      '@nuxtjs/eslint-module':
-        specifier: 4.1.0
-        version: 4.1.0(eslint@10.3.0(jiti@2.6.1))(magicast@0.5.2)(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3))(webpack@5.106.2(esbuild@0.27.7))
       '@nuxtjs/fontaine':
         specifier: 0.5.0
         version: 0.5.0(magicast@0.5.2)
@@ -1367,11 +1364,6 @@ packages:
   '@nuxtjs/color-mode@3.5.2':
     resolution: {integrity: sha512-cC6RfgZh3guHBMLLjrBB2Uti5eUoGM9KyauOaYS9ETmxNWBMTvpgjvSiSJp1OFljIXPIqVTJ3xtJpSNZiO3ZaA==}
 
-  '@nuxtjs/eslint-module@4.1.0':
-    resolution: {integrity: sha512-lW9ozEjOrnU8Uot3GOAZ/0ThNAds0d6UAp9n46TNxcTvH/MOcAggGbMNs16c0HYT2HlyPQvXORCHQ5+9p87mmw==}
-    peerDependencies:
-      eslint: '>=7'
-
   '@nuxtjs/fontaine@0.5.0':
     resolution: {integrity: sha512-68po45LJW1bMrlxPiI96L4lH/8Hom8LDKsUSmIZtgPrtI1HvFvg9Kcj2329DkWIH379hyffT2Qt7/1RgRPVV+A==}
 
@@ -1943,10 +1935,6 @@ packages:
     peerDependenciesMeta:
       rollup:
         optional: true
-
-  '@rollup/pluginutils@4.2.1':
-    resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
-    engines: {node: '>= 8.0.0'}
 
   '@rollup/pluginutils@5.3.0':
     resolution: {integrity: sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==}
@@ -3279,10 +3267,6 @@ packages:
     resolution: {integrity: sha512-wqUv4Gm3toFpHDQmaKD4QhZm3g1DjUBI0yzS4UBl6lElUmXFYdTQmmEDpAFa5o8FiFiymURypEnfVHzILKaxqQ==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x}
 
-  binary-extensions@2.3.0:
-    resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
-    engines: {node: '>=8'}
-
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
 
@@ -3379,10 +3363,6 @@ packages:
 
   change-case@5.4.4:
     resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
-
-  chokidar@3.6.0:
-    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
-    engines: {node: '>= 8.10.0'}
 
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
@@ -4618,10 +4598,6 @@ packages:
   is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
 
-  is-binary-path@2.1.0:
-    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
-    engines: {node: '>=8'}
-
   is-builtin-module@5.0.0:
     resolution: {integrity: sha512-f4RqJKBUe5rQkJ2eJEJBXSticB3hGbN9j0yxxMQFqIW89Jp9WYFtzfTcRlstDKVUTRzSOTLKRfO9vIztenwtxA==}
     engines: {node: '>=18.20'}
@@ -5622,10 +5598,6 @@ packages:
   readdir-glob@1.1.3:
     resolution: {integrity: sha512-v05I2k7xN8zXvPD9N+z/uhXPaj0sUFCe2rcWZIpBsqxfP7xXFQ0tipAd/wjj1YxWyWtUS5IDJpOG82JKt2EAVA==}
 
-  readdirp@3.6.0:
-    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
-    engines: {node: '>=8.10.0'}
-
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
@@ -5712,11 +5684,6 @@ packages:
         optional: true
       rollup:
         optional: true
-
-  rollup@2.80.0:
-    resolution: {integrity: sha512-cIFJOD1DESzpjOBl763Kp1AH7UE/0fcdHe6rZXUdQ9c50uvgigvW97u3IcSeBwOkgqL/PXPBktBCh0KEu5L8XQ==}
-    engines: {node: '>=10.0.0'}
-    hasBin: true
 
   rollup@4.60.2:
     resolution: {integrity: sha512-J9qZyW++QK/09NyN/zeO0dG/1GdGfyp9lV8ajHnRVLfo/uFsbji5mHnDgn/qYdUHyCkM2N+8VyspgZclfAh0eQ==}
@@ -6363,12 +6330,6 @@ packages:
         optional: true
       vue-tsc:
         optional: true
-
-  vite-plugin-eslint@1.8.1:
-    resolution: {integrity: sha512-PqdMf3Y2fLO9FsNPmMX+//2BF5SF8nEWspZdgl4kSt7UvHDRHVVfHvxsD7ULYzZrJDGRxR81Nq7TOFgwMnUang==}
-    peerDependencies:
-      eslint: '>=7'
-      vite: '>=2'
 
   vite-plugin-inspect@11.3.3:
     resolution: {integrity: sha512-u2eV5La99oHoYPHE6UvbwgEqKKOQGz86wMg40CCosP6q8BkB6e5xPneZfYagK4ojPJSj5anHCrnvC20DpwVdRA==}
@@ -7428,6 +7389,7 @@ snapshots:
   '@jest/schemas@29.6.3':
     dependencies:
       '@sinclair/typebox': 0.27.10
+    optional: true
 
   '@jest/types@29.6.3':
     dependencies:
@@ -7437,6 +7399,7 @@ snapshots:
       '@types/node': 25.6.0
       '@types/yargs': 17.0.35
       chalk: 4.1.2
+    optional: true
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -8210,19 +8173,6 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxtjs/eslint-module@4.1.0(eslint@10.3.0(jiti@2.6.1))(magicast@0.5.2)(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3))(webpack@5.106.2(esbuild@0.27.7))':
-    dependencies:
-      '@nuxt/kit': 3.21.2(magicast@0.5.2)
-      chokidar: 3.6.0
-      eslint: 10.3.0(jiti@2.6.1)
-      eslint-webpack-plugin: 4.2.0(eslint@10.3.0(jiti@2.6.1))(webpack@5.106.2(esbuild@0.27.7))
-      pathe: 1.1.2
-      vite-plugin-eslint: 1.8.1(eslint@10.3.0(jiti@2.6.1))(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3))
-    transitivePeerDependencies:
-      - magicast
-      - vite
-      - webpack
-
   '@nuxtjs/fontaine@0.5.0(magicast@0.5.2)':
     dependencies:
       '@nuxt/kit': 3.21.2(magicast@0.5.2)
@@ -8582,11 +8532,6 @@ snapshots:
     optionalDependencies:
       rollup: 4.60.2
 
-  '@rollup/pluginutils@4.2.1':
-    dependencies:
-      estree-walker: 2.0.2
-      picomatch: 2.3.2
-
   '@rollup/pluginutils@5.3.0(rollup@4.60.2)':
     dependencies:
       '@types/estree': 1.0.8
@@ -8676,7 +8621,8 @@ snapshots:
     dependencies:
       '@simple-git/args-pathspec': 1.0.3
 
-  '@sinclair/typebox@0.27.10': {}
+  '@sinclair/typebox@0.27.10':
+    optional: true
 
   '@sindresorhus/base62@1.0.0': {}
 
@@ -9163,16 +9109,19 @@ snapshots:
     dependencies:
       '@types/eslint': 9.6.1
       '@types/estree': 1.0.8
+    optional: true
 
   '@types/eslint@8.56.12':
     dependencies:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
+    optional: true
 
   '@types/eslint@9.6.1':
     dependencies:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
+    optional: true
 
   '@types/esrecurse@4.3.1': {}
 
@@ -9180,15 +9129,18 @@ snapshots:
 
   '@types/geojson@7946.0.16': {}
 
-  '@types/istanbul-lib-coverage@2.0.6': {}
+  '@types/istanbul-lib-coverage@2.0.6':
+    optional: true
 
   '@types/istanbul-lib-report@3.0.3':
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
+    optional: true
 
   '@types/istanbul-reports@3.0.4':
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
+    optional: true
 
   '@types/json-schema@7.0.15': {}
 
@@ -9263,11 +9215,13 @@ snapshots:
       '@types/node': 25.6.0
     optional: true
 
-  '@types/yargs-parser@21.0.3': {}
+  '@types/yargs-parser@21.0.3':
+    optional: true
 
   '@types/yargs@17.0.35':
     dependencies:
       '@types/yargs-parser': 21.0.3
+    optional: true
 
   '@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.59.0(eslint@10.3.0(jiti@2.6.1))(typescript@6.0.3))(eslint@10.3.0(jiti@2.6.1))(typescript@6.0.3)':
     dependencies:
@@ -9752,20 +9706,26 @@ snapshots:
     dependencies:
       '@webassemblyjs/helper-numbers': 1.13.2
       '@webassemblyjs/helper-wasm-bytecode': 1.13.2
+    optional: true
 
-  '@webassemblyjs/floating-point-hex-parser@1.13.2': {}
+  '@webassemblyjs/floating-point-hex-parser@1.13.2':
+    optional: true
 
-  '@webassemblyjs/helper-api-error@1.13.2': {}
+  '@webassemblyjs/helper-api-error@1.13.2':
+    optional: true
 
-  '@webassemblyjs/helper-buffer@1.14.1': {}
+  '@webassemblyjs/helper-buffer@1.14.1':
+    optional: true
 
   '@webassemblyjs/helper-numbers@1.13.2':
     dependencies:
       '@webassemblyjs/floating-point-hex-parser': 1.13.2
       '@webassemblyjs/helper-api-error': 1.13.2
       '@xtuc/long': 4.2.2
+    optional: true
 
-  '@webassemblyjs/helper-wasm-bytecode@1.13.2': {}
+  '@webassemblyjs/helper-wasm-bytecode@1.13.2':
+    optional: true
 
   '@webassemblyjs/helper-wasm-section@1.14.1':
     dependencies:
@@ -9773,16 +9733,20 @@ snapshots:
       '@webassemblyjs/helper-buffer': 1.14.1
       '@webassemblyjs/helper-wasm-bytecode': 1.13.2
       '@webassemblyjs/wasm-gen': 1.14.1
+    optional: true
 
   '@webassemblyjs/ieee754@1.13.2':
     dependencies:
       '@xtuc/ieee754': 1.2.0
+    optional: true
 
   '@webassemblyjs/leb128@1.13.2':
     dependencies:
       '@xtuc/long': 4.2.2
+    optional: true
 
-  '@webassemblyjs/utf8@1.13.2': {}
+  '@webassemblyjs/utf8@1.13.2':
+    optional: true
 
   '@webassemblyjs/wasm-edit@1.14.1':
     dependencies:
@@ -9794,6 +9758,7 @@ snapshots:
       '@webassemblyjs/wasm-opt': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
       '@webassemblyjs/wast-printer': 1.14.1
+    optional: true
 
   '@webassemblyjs/wasm-gen@1.14.1':
     dependencies:
@@ -9802,6 +9767,7 @@ snapshots:
       '@webassemblyjs/ieee754': 1.13.2
       '@webassemblyjs/leb128': 1.13.2
       '@webassemblyjs/utf8': 1.13.2
+    optional: true
 
   '@webassemblyjs/wasm-opt@1.14.1':
     dependencies:
@@ -9809,6 +9775,7 @@ snapshots:
       '@webassemblyjs/helper-buffer': 1.14.1
       '@webassemblyjs/wasm-gen': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
+    optional: true
 
   '@webassemblyjs/wasm-parser@1.14.1':
     dependencies:
@@ -9818,15 +9785,19 @@ snapshots:
       '@webassemblyjs/ieee754': 1.13.2
       '@webassemblyjs/leb128': 1.13.2
       '@webassemblyjs/utf8': 1.13.2
+    optional: true
 
   '@webassemblyjs/wast-printer@1.14.1':
     dependencies:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
+    optional: true
 
-  '@xtuc/ieee754@1.2.0': {}
+  '@xtuc/ieee754@1.2.0':
+    optional: true
 
-  '@xtuc/long@4.2.2': {}
+  '@xtuc/long@4.2.2':
+    optional: true
 
   abbrev@3.0.1: {}
 
@@ -9841,6 +9812,7 @@ snapshots:
   acorn-import-phases@1.0.4(acorn@8.16.0):
     dependencies:
       acorn: 8.16.0
+    optional: true
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
@@ -9853,11 +9825,13 @@ snapshots:
   ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:
       ajv: 8.20.0
+    optional: true
 
   ajv-keywords@5.1.0(ajv@8.20.0):
     dependencies:
       ajv: 8.20.0
       fast-deep-equal: 3.1.3
+    optional: true
 
   ajv@6.15.0:
     dependencies:
@@ -9872,6 +9846,7 @@ snapshots:
       fast-uri: 3.1.2
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
+    optional: true
 
   alien-signals@3.1.2: {}
 
@@ -10001,8 +9976,6 @@ snapshots:
       prebuild-install: 7.1.3
     optional: true
 
-  binary-extensions@2.3.0: {}
-
   bindings@1.5.0:
     dependencies:
       file-uri-to-path: 1.0.0
@@ -10108,20 +10081,9 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    optional: true
 
   change-case@5.4.4: {}
-
-  chokidar@3.6.0:
-    dependencies:
-      anymatch: 3.1.3
-      braces: 3.0.3
-      glob-parent: 5.1.2
-      is-binary-path: 2.1.0
-      is-glob: 4.0.3
-      normalize-path: 3.0.0
-      readdirp: 3.6.0
-    optionalDependencies:
-      fsevents: 2.3.3
 
   chokidar@4.0.3:
     dependencies:
@@ -10136,9 +10098,11 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chrome-trace-event@1.0.4: {}
+  chrome-trace-event@1.0.4:
+    optional: true
 
-  ci-info@3.9.0: {}
+  ci-info@3.9.0:
+    optional: true
 
   ci-info@4.4.0: {}
 
@@ -10895,6 +10859,7 @@ snapshots:
     dependencies:
       esrecurse: 4.3.0
       estraverse: 4.3.0
+    optional: true
 
   eslint-scope@9.1.2:
     dependencies:
@@ -10924,6 +10889,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.3.3
       webpack: 5.106.2(esbuild@0.27.7)
+    optional: true
 
   eslint@10.3.0(jiti@2.6.1):
     dependencies:
@@ -10982,7 +10948,8 @@ snapshots:
     dependencies:
       estraverse: 5.3.0
 
-  estraverse@4.3.0: {}
+  estraverse@4.3.0:
+    optional: true
 
   estraverse@5.3.0: {}
 
@@ -11047,7 +11014,8 @@ snapshots:
     dependencies:
       fast-string-truncated-width: 1.2.1
 
-  fast-uri@3.1.2: {}
+  fast-uri@3.1.2:
+    optional: true
 
   fast-wrap-ansi@0.1.6:
     dependencies:
@@ -11230,7 +11198,8 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  glob-to-regexp@0.4.1: {}
+  glob-to-regexp@0.4.1:
+    optional: true
 
   glob@10.5.0:
     dependencies:
@@ -11295,7 +11264,8 @@ snapshots:
       ufo: 1.6.4
       uncrypto: 0.1.3
 
-  has-flag@4.0.0: {}
+  has-flag@4.0.0:
+    optional: true
 
   hasown@2.0.3:
     dependencies:
@@ -11428,10 +11398,6 @@ snapshots:
 
   is-arrayish@0.2.1: {}
 
-  is-binary-path@2.1.0:
-    dependencies:
-      binary-extensions: 2.3.0
-
   is-builtin-module@5.0.0:
     dependencies:
       builtin-modules: 5.1.0
@@ -11501,12 +11467,14 @@ snapshots:
       ci-info: 3.9.0
       graceful-fs: 4.2.11
       picomatch: 2.3.2
+    optional: true
 
   jest-worker@27.5.1:
     dependencies:
       '@types/node': 25.6.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
+    optional: true
 
   jest-worker@29.7.0:
     dependencies:
@@ -11514,6 +11482,7 @@ snapshots:
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
+    optional: true
 
   jiti@2.6.1: {}
 
@@ -11543,7 +11512,8 @@ snapshots:
 
   json-schema-traverse@0.4.1: {}
 
-  json-schema-traverse@1.0.0: {}
+  json-schema-traverse@1.0.0:
+    optional: true
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
@@ -11679,7 +11649,8 @@ snapshots:
 
   load-tsconfig@0.2.5: {}
 
-  loader-runner@4.3.2: {}
+  loader-runner@4.3.2:
+    optional: true
 
   local-pkg@1.1.2:
     dependencies:
@@ -11874,7 +11845,8 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  neo-async@2.6.2: {}
+  neo-async@2.6.2:
+    optional: true
 
   nitropack@2.13.3(@libsql/client@0.17.3)(better-sqlite3@12.9.0)(drizzle-orm@0.45.2(@libsql/client@0.17.3)(@types/better-sqlite3@7.6.13)(@types/sql.js@1.4.11)(better-sqlite3@12.9.0)(sql.js@1.14.1))(srvx@0.11.15):
     dependencies:
@@ -12720,10 +12692,6 @@ snapshots:
     dependencies:
       minimatch: 5.1.9
 
-  readdirp@3.6.0:
-    dependencies:
-      picomatch: 2.3.2
-
   readdirp@4.1.2: {}
 
   readdirp@5.0.0: {}
@@ -12765,7 +12733,8 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
-  require-from-string@2.0.2: {}
+  require-from-string@2.0.2:
+    optional: true
 
   reserved-identifiers@1.2.0: {}
 
@@ -12800,10 +12769,6 @@ snapshots:
       yargs: 18.0.0
     optionalDependencies:
       rollup: 4.60.2
-
-  rollup@2.80.0:
-    optionalDependencies:
-      fsevents: 2.3.3
 
   rollup@4.60.2:
     dependencies:
@@ -12862,6 +12827,7 @@ snapshots:
       ajv: 8.20.0
       ajv-formats: 2.1.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
+    optional: true
 
   scslre@0.3.0:
     dependencies:
@@ -13095,10 +13061,12 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+    optional: true
 
   supports-color@8.1.1:
     dependencies:
       has-flag: 4.0.0
+    optional: true
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
@@ -13178,6 +13146,7 @@ snapshots:
       webpack: 5.106.2(esbuild@0.27.7)
     optionalDependencies:
       esbuild: 0.27.7
+    optional: true
 
   terser@5.46.2:
     dependencies:
@@ -13524,14 +13493,6 @@ snapshots:
       typescript: 6.0.3
       vue-tsc: 3.2.8(typescript@6.0.3)
 
-  vite-plugin-eslint@1.8.1(eslint@10.3.0(jiti@2.6.1))(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3)):
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      '@types/eslint': 8.56.12
-      eslint: 10.3.0(jiti@2.6.1)
-      rollup: 2.80.0
-      vite: 7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3)
-
   vite-plugin-inspect@11.3.3(@nuxt/kit@4.4.4(magicast@0.5.2))(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       ansis: 4.2.0
@@ -13653,10 +13614,12 @@ snapshots:
     dependencies:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
+    optional: true
 
   webidl-conversions@3.0.1: {}
 
-  webpack-sources@3.4.1: {}
+  webpack-sources@3.4.1:
+    optional: true
 
   webpack-virtual-modules@0.6.2: {}
 
@@ -13690,6 +13653,7 @@ snapshots:
       - '@swc/core'
       - esbuild
       - uglify-js
+    optional: true
 
   whatwg-url@5.0.0:
     dependencies:

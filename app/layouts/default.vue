@@ -41,26 +41,34 @@ function toggleColorMode() {
       collapsible
       resizable
       class="bg-elevated/30"
-      :ui="{ footer: 'lg:border-t lg:border-default' }"
+      :ui="{
+        header: 'px-3 pt-3 pb-1 lg:px-4 lg:pt-4 lg:pb-1',
+        body: 'px-3 pb-3 lg:px-4 lg:pb-4',
+        footer: 'px-3 py-3 lg:px-4 lg:py-4 lg:border-t lg:border-default'
+      }"
     >
-      <template #header>
-        <div class="flex items-center gap-3 rounded-xl border border-default bg-default px-3 py-3">
-          <div class="flex size-10 items-center justify-center rounded-xl bg-primary text-inverted">
-            <UIcon name="i-lucide-bot" class="size-5" />
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-highlighted">
-              Devin Proxy Hub
-            </p>
-            <p class="text-xs text-muted">
-              Local OpenAI-compatible bridge
-            </p>
-          </div>
-        </div>
+      <template #header="{ collapsed }">
+        <NuxtLink
+          to="/"
+          class="border-default/70 bg-default text-highlighted transition-all duration-200 hover:border-primary/30 hover:bg-elevated/60"
+          :class="collapsed
+            ? 'mx-auto flex size-9 items-center justify-center rounded-xl border'
+            : 'flex items-center rounded-xl border px-3.5 py-3'"
+          @click="open = false"
+        >
+          <NuxtImg src="/devin.png" alt="Devin Proxy Hub" class="size-5 shrink-0" />
+          <p
+            v-if="!collapsed"
+            class="my-auto ml-2 truncate text-sm font-semibold leading-none text-highlighted"
+          >
+            Devin Proxy Hub
+          </p>
+        </NuxtLink>
       </template>
 
       <template #default="{ collapsed }">
         <UNavigationMenu
+          class="mt-1"
           :collapsed="collapsed"
           :items="navigation[0]"
           orientation="vertical"
@@ -69,17 +77,20 @@ function toggleColorMode() {
         />
       </template>
 
-      <template #footer>
+      <template #footer="{ collapsed }">
         <div class="space-y-3">
           <UButton
             color="neutral"
             variant="outline"
-            block
+            :block="!collapsed"
+            :square="collapsed"
             :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
-            :label="colorMode.value === 'dark' ? 'Light mode' : 'Dark mode'"
+            :label="collapsed ? undefined : colorMode.value === 'dark' ? 'Light mode' : 'Dark mode'"
+            :ui="collapsed ? { base: 'mx-auto flex size-9 items-center justify-center' } : undefined"
             @click="toggleColorMode"
           />
-          <div class="rounded-xl border border-default px-3 py-3 text-xs text-muted">
+
+          <div v-if="!collapsed" class="rounded-xl border border-default px-3 py-3 text-xs text-muted">
             Requests to <code class="font-mono text-highlighted">/v1/chat/completions</code> are translated into Devin sessions and tracked locally.
           </div>
         </div>

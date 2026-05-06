@@ -152,37 +152,53 @@ function formatDate(value: string | null) {
     </template>
 
     <template #body>
-      <div class="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+      <div class="mx-auto grid w-full max-w-7xl gap-8 xl:grid-cols-[380px_minmax(0,1fr)]">
         <UPageCard
           :title="editingId ? 'Edit Devin key' : 'Add Devin key'"
           description="Store keys locally. The dashboard never returns raw secrets back to the browser."
           variant="subtle"
+          :ui="{
+            root: 'rounded-2xl',
+            container: 'p-6 sm:p-7',
+            header: 'mb-6',
+            title: 'text-base font-semibold text-highlighted',
+            description: 'mt-2 text-sm leading-6 text-muted'
+          }"
         >
-          <form class="space-y-4" @submit.prevent="submit">
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-highlighted">Name</label>
-              <UInput v-model="form.name" placeholder="Primary org key" required />
+          <form class="space-y-5" @submit.prevent="submit">
+            <div class="grid gap-2">
+              <label class="block text-sm font-medium text-highlighted">Name</label>
+              <UInput v-model="form.name" class="w-full" size="lg" placeholder="Primary org key" required />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-highlighted">Organization ID</label>
-              <UInput v-model="form.orgId" placeholder="org_..." required />
+
+            <div class="grid gap-2">
+              <label class="block text-sm font-medium text-highlighted">Organization ID</label>
+              <UInput v-model="form.orgId" class="w-full" size="lg" placeholder="org_..." required />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-highlighted">{{ editingId ? 'API key (leave blank to keep current)' : 'API key' }}</label>
+
+            <div class="grid gap-2">
+              <label class="block text-sm font-medium text-highlighted">
+                {{ editingId ? 'API key (leave blank to keep current)' : 'API key' }}
+              </label>
               <UTextarea
                 v-model="form.apiKey"
+                class="w-full"
                 placeholder="cog_..."
                 :required="!editingId"
                 :rows="4"
               />
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-highlighted">Status</label>
-              <USelect v-model="form.status" :items="statusOptions" />
+              <p class="text-xs text-muted">
+                Keys stay local and are masked everywhere in the UI.
+              </p>
             </div>
 
-            <div class="flex gap-3">
-              <UButton type="submit" :label="editingId ? 'Save changes' : 'Add key'" />
+            <div class="grid gap-2">
+              <label class="block text-sm font-medium text-highlighted">Status</label>
+              <USelect v-model="form.status" class="w-full" size="lg" :items="statusOptions" />
+            </div>
+
+            <div class="flex flex-wrap gap-3 pt-2">
+              <UButton type="submit" size="lg" :label="editingId ? 'Save changes' : 'Add key'" />
               <UButton type="button" color="neutral" variant="outline" label="Reset" @click="resetForm" />
             </div>
           </form>
@@ -192,6 +208,13 @@ function formatDate(value: string | null) {
           title="Rotation order"
           description="Keys are tried from top to bottom. Rate-limited or exhausted keys are skipped automatically."
           variant="subtle"
+          :ui="{
+            root: 'rounded-2xl',
+            container: 'p-6 sm:p-7',
+            header: 'mb-6',
+            title: 'text-base font-semibold text-highlighted',
+            description: 'mt-2 text-sm leading-6 text-muted'
+          }"
         >
           <div v-if="status === 'pending'" class="space-y-3">
             <div v-for="placeholder in 3" :key="placeholder" class="h-24 rounded-xl border border-default bg-elevated/40" />
