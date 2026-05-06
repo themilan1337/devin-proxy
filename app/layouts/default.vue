@@ -26,6 +26,13 @@ const navigation = [[{
   onSelect: () => {
     open.value = false
   }
+}, {
+  label: 'API Docs',
+  icon: 'i-lucide-book-open',
+  to: '/docs',
+  onSelect: () => {
+    open.value = false
+  }
 }]] satisfies NavigationMenuItem[][]
 
 function toggleColorMode() {
