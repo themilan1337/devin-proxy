@@ -33,6 +33,13 @@ const navigation = [[{
   onSelect: () => {
     open.value = false
   }
+}, {
+  label: 'Chat',
+  icon: 'i-lucide-message-square',
+  to: '/chat',
+  onSelect: () => {
+    open.value = false
+  }
 }]] satisfies NavigationMenuItem[][]
 
 function toggleColorMode() {

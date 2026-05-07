@@ -55,6 +55,51 @@ export function compileDevinPrompt(messages: OpenAIChatMessage[]) {
   ].join('\n')
 }
 
+const SYSTEM_PROMPT_HEADER = 'You are operating behind an OpenAI-compatible proxy'
+
+/**
+ * Devin sometimes echoes the compiled system prompt verbatim as its first
+ * output message. Strip that echo so only the actual response is surfaced.
+ *
+ * Strategy:
+ *  1. Exact-match: if the response starts with the exact prompt we sent, trim it.
+ *  2. Line-by-line: skip lines that are part of our known prompt structure
+ *     (header sentences, blank lines, "Message N", "Role: X", transcript content).
+ */
+export function stripSystemPromptEcho(text: string, sentPrompt: string): string {
+  if (!text.includes(SYSTEM_PROMPT_HEADER)) return text
+
+  // Fast path – exact prefix match (most common case)
+  const trimmedText = text.trimStart()
+  const trimmedPrompt = sentPrompt.trim()
+  if (trimmedText.startsWith(trimmedPrompt)) {
+    return trimmedText.slice(trimmedPrompt.length).trim()
+  }
+
+  // Slow path – strip line by line when Devin reformats whitespace
+  const lines = text.split('\n')
+  let i = 0
+  while (i < lines.length) {
+    const line = lines[i]!.trim()
+    if (
+      line === '' ||
+      line.startsWith('You are operating behind') ||
+      line.startsWith('Use the conversation transcript') ||
+      line.startsWith('Continue the task autonomously') ||
+      /^Message\s+\d+$/.test(line) ||
+      /^Role:\s/.test(line) ||
+      // Content lines that appear verbatim inside the sent prompt (transcript body)
+      (line.length > 0 && sentPrompt.includes(line))
+    ) {
+      i++
+    } else {
+      break
+    }
+  }
+
+  return lines.slice(i).join('\n').trim()
+}
+
 export function buildPromptSnippet(prompt: string) {
   const compact = prompt.replace(/\s+/g, ' ').trim()
   return compact.length > 140 ? `${compact.slice(0, 137)}...` : compact

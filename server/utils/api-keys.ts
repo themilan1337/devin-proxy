@@ -13,14 +13,15 @@ const apiKeyStatusSchema = z.enum(['active', 'rate_limited', 'invalid', 'disable
 export const apiKeyInputSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
   apiKey: z.string().trim().min(1, 'API key is required'),
-  orgId: z.string().trim().min(1, 'Organization ID is required'),
+  // Empty/omitted = v1 personal key (no org needed); set = v3 service user key
+  orgId: z.string().trim().optional().default(''),
   status: apiKeyStatusSchema.optional().default('active')
 })
 
 export const apiKeyUpdateSchema = z.object({
   name: z.string().trim().min(1).optional(),
   apiKey: z.string().trim().min(1).optional(),
-  orgId: z.string().trim().min(1).optional(),
+  orgId: z.string().trim().optional(),
   status: apiKeyStatusSchema.optional()
 })
 
@@ -224,6 +225,22 @@ export async function markApiKeyInvalid(id: number, message: string) {
   }).where(eq(apiKeys.id, id)).run()
 
   await flushDbToDisk()
+}
+
+export async function restoreApiKey(id: number) {
+  const db = await getDb()
+  await db.update(apiKeys).set({
+    status: 'active',
+    cooldownUntil: null,
+    lastError: null,
+    lastUsedAt: nowIso(),
+    updatedAt: nowIso()
+  }).where(eq(apiKeys.id, id)).run()
+
+  await flushDbToDisk()
+
+  const updated = await getApiKeyRecordById(id)
+  return updated ? toApiKeyListItem(updated) : null
 }
 
 export async function markApiKeyExhausted(id: number, message: string) {

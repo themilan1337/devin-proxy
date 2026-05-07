@@ -1086,6 +1086,95 @@ console.log(response.choices[0].message.content)`,
                   </p>
                 </div>
               </div>
+
+              <!-- POST /api/keys/:id/check -->
+              <div
+                class="overflow-hidden rounded-xl border border-default"
+                :class="methodBorder['POST']"
+                style="border-left-width: 4px"
+              >
+                <button
+                  class="flex w-full items-center gap-3 px-5 py-3.5 text-left transition-colors"
+                  :class="methodHeaderBg['POST']"
+                  @click="toggle('post-check')"
+                >
+                  <span class="shrink-0 rounded px-2 py-0.5 font-mono text-xs font-bold" :class="methodBadge['POST']">POST</span>
+                  <code class="flex-1 font-mono text-sm font-medium text-highlighted">/api/keys/:id/check</code>
+                  <span class="hidden text-xs text-muted sm:block">Validate a key against Devin</span>
+                  <UIcon :name="openEndpoints['post-check'] ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" class="ml-auto size-4 shrink-0 text-muted" />
+                </button>
+                <div v-if="openEndpoints['post-check']" class="border-t border-default p-6 space-y-5">
+                  <p class="text-sm text-default">
+                    Sends a real read-only probe to the Devin API (<code class="font-mono text-xs text-highlighted">GET /organizations/{'{orgId}'}/sessions?limit=1</code>)
+                    using the stored key and org ID. The key status in the database is updated automatically based on the result —
+                    <code class="font-mono text-xs text-highlighted">invalid</code> on 401/403, <code class="font-mono text-xs text-highlighted">rate_limited</code> on 429.
+                    No sessions are created.
+                  </p>
+
+                  <div class="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50/60 px-4 py-3 text-xs dark:border-blue-800/50 dark:bg-blue-950/20">
+                    <UIcon name="i-lucide-shield-check" class="mt-0.5 size-3.5 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <p class="text-blue-700 dark:text-blue-400">
+                      This is a non-destructive, read-only probe. It lists at most 1 session from the org to confirm credentials. The raw API key is never exposed in the response.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">Response schema</p>
+                    <div class="overflow-x-auto rounded-xl border border-default">
+                      <table class="w-full text-xs">
+                        <thead>
+                          <tr class="border-b border-default bg-elevated/40">
+                            <th class="px-4 py-2.5 text-left font-semibold text-muted">Field</th>
+                            <th class="px-4 py-2.5 text-left font-semibold text-muted">Type</th>
+                            <th class="px-4 py-2.5 text-left font-semibold text-muted">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-default">
+                          <tr class="bg-default">
+                            <td class="px-4 py-2.5 font-mono font-medium text-highlighted">valid</td>
+                            <td class="px-4 py-2.5 font-mono text-muted">boolean</td>
+                            <td class="px-4 py-2.5 text-default"><code class="font-mono text-highlighted">true</code> if the Devin API accepted the credentials.</td>
+                          </tr>
+                          <tr class="bg-default">
+                            <td class="px-4 py-2.5 font-mono font-medium text-highlighted">status</td>
+                            <td class="px-4 py-2.5 font-mono text-muted">string?</td>
+                            <td class="px-4 py-2.5 text-default">Present when <code class="font-mono text-highlighted">valid</code> is <code class="font-mono text-highlighted">false</code>: <code class="font-mono text-highlighted">invalid</code> | <code class="font-mono text-highlighted">rate_limited</code> | <code class="font-mono text-highlighted">error</code>.</td>
+                          </tr>
+                          <tr class="bg-default">
+                            <td class="px-4 py-2.5 font-mono font-medium text-highlighted">message</td>
+                            <td class="px-4 py-2.5 font-mono text-muted">string</td>
+                            <td class="px-4 py-2.5 text-default">Human-readable description of the result.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Success (200)</p>
+                      <div class="relative">
+                        <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{ "valid": true, "message": "API key is valid and the organization ID is correct." }</code></pre>
+                      </div>
+                    </div>
+                    <div>
+                      <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Invalid key (200)</p>
+                      <div class="relative">
+                        <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{
+  "valid": false,
+  "status": "invalid",
+  "message": "Authentication failed — key is invalid or the organization ID is wrong."
+}</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs text-muted">
+                    <span class="rounded bg-elevated px-2 py-1 ring-1 ring-default">404 if key not found</span>
+                    <span class="rounded bg-elevated px-2 py-1 ring-1 ring-default">502 on network error to Devin</span>
+                    <span class="rounded bg-elevated px-2 py-1 ring-1 ring-default">Key status auto-updated in DB</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
