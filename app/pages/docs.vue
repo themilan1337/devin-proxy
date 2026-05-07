@@ -40,14 +40,14 @@ const methodHeaderBg: Record<HttpMethod, string> = {
 const activeSectionId = ref('docs-intro')
 
 const tocItems = [
+  { id: 'docs-integrations', label: 'Integrations' },
   { id: 'docs-intro', label: 'Introduction' },
   { id: 'docs-quickstart', label: 'Quick Start' },
   { id: 'docs-config', label: 'Configuration' },
   { id: 'docs-proxy', label: 'Proxy API', indent: false },
   { id: 'docs-keys', label: 'API Keys' },
   { id: 'docs-sessions', label: 'Sessions' },
-  { id: 'docs-overview', label: 'Overview' },
-  { id: 'docs-integrations', label: 'Integrations' }
+  { id: 'docs-overview', label: 'Overview' }
 ]
 
 function scrollTo(id: string) {
@@ -58,7 +58,7 @@ function scrollTo(id: string) {
   }
 }
 
-const integrationTab = ref<'opencode' | 'python' | 'nodejs' | 'curl'>('opencode')
+const integrationTab = ref<'opencode' | 'openagent' | 'python' | 'nodejs' | 'curl'>('opencode')
 
 // ─── Code snippets ───────────────────────────────────────────────────────────
 
@@ -224,16 +224,43 @@ data: [DONE]`,
   "sessions": [ /* ProxySessionListItem[] — latest 12 */ ]
 }`,
 
-  openCodeConfig: `// opencode.json (project root)
+  openCodeConfig: `// ~/.config/opencode/opencode.json
 {
-  "model": {
-    "id": "devin-proxy-hub",
-    "name": "Devin (via Proxy)",
-    "provider": "openai",
-    "apiKey": "any-non-empty-value",
-    "baseURL": "http://localhost:3000/v1"
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "devin-proxy": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Devin Proxy Hub",
+      "options": {
+        "baseURL": "http://localhost:3000/v1",
+        "apiKey": "any-non-empty-value"
+      },
+      "models": {
+        "devin-proxy-hub": {
+          "name": "Devin (via Proxy)"
+        }
+      }
+    }
+  },
+  "model": "devin-proxy/devin-proxy-hub"
+}`,
+
+  openAgentConfig: `// ~/.config/opencode/oh-my-openagent.json
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/master/assets/oh-my-openagent.schema.json",
+  "agents": {
+    "sisyphus":   { "model": "devin-proxy/devin-proxy-hub" },
+    "hephaestus": { "model": "devin-proxy/devin-proxy-hub" },
+    "prometheus": { "model": "devin-proxy/devin-proxy-hub" },
+    "atlas":      { "model": "devin-proxy/devin-proxy-hub" }
+  },
+  "categories": {
+    "deep":       { "model": "devin-proxy/devin-proxy-hub" },
+    "ultrabrain": { "model": "devin-proxy/devin-proxy-hub" }
   }
 }`,
+
+  installOpenAgent: 'bunx oh-my-openagent install',
 
   pythonCode: `from openai import OpenAI
 
@@ -389,6 +416,243 @@ console.log(response.choices[0].message.content)`,
               </div>
             </div>
           </div>
+
+          <!-- ── Integrations ───────────────────────────────────────────── -->
+          <section id="docs-integrations">
+            <h2 class="mb-5 text-lg font-bold text-highlighted">
+              Integrations
+            </h2>
+            <p class="mb-6 text-sm text-muted">
+              Because the proxy is fully OpenAI-compatible, it works with any client that supports a custom base URL.
+            </p>
+
+            <!-- Tab bar -->
+            <div class="mb-4 flex gap-1 overflow-x-auto rounded-xl border border-default bg-elevated/30 p-1">
+              <button
+                v-for="tab in ([
+                  { id: 'opencode', label: 'OpenCode', icon: 'i-lucide-terminal-square' },
+                  { id: 'openagent', label: 'Oh My OpenAgent', icon: 'i-lucide-bot' },
+                  { id: 'python', label: 'Python', icon: 'i-simple-icons-python' },
+                  { id: 'nodejs', label: 'Node.js', icon: 'i-simple-icons-nodedotjs' },
+                  { id: 'curl', label: 'cURL', icon: 'i-lucide-terminal' }
+                ] as const)"
+                :key="tab.id"
+                class="flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                :class="integrationTab === tab.id
+                  ? 'bg-default text-highlighted shadow-sm ring-1 ring-default'
+                  : 'text-muted hover:text-default'"
+                @click="integrationTab = tab.id"
+              >
+                <UIcon :name="tab.icon" class="size-3.5" />
+                {{ tab.label }}
+              </button>
+            </div>
+
+            <!-- OpenCode -->
+            <div v-if="integrationTab === 'opencode'" class="space-y-5">
+              <UPageCard variant="subtle">
+                <div class="space-y-4">
+                  <div class="flex items-start gap-3">
+                    <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <UIcon name="i-lucide-book-open" class="size-4 text-primary" />
+                    </div>
+                    <div>
+                      <p class="font-semibold text-highlighted">
+                        OpenCode integration
+                      </p>
+                      <p class="mt-1 text-sm text-muted">
+                        <a href="https://opencode.ai" target="_blank" class="text-primary underline-offset-2 hover:underline">OpenCode</a>
+                        is an open-source AI coding agent. Register the proxy as a custom <code class="rounded bg-elevated px-1 font-mono text-xs text-highlighted">@ai-sdk/openai-compatible</code> provider to route all requests through Devin.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 1 — Start the proxy</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>pnpm dev  # or: PORT=3000 node .output/server/index.mjs</code></pre>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 2 — Add Devin API key in the dashboard</p>
+                    <p class="mb-3 text-xs text-muted">
+                      Open <code class="rounded bg-elevated px-1 font-mono text-highlighted">http://localhost:3000/keys</code>
+                      and add your Devin API key and org ID.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 3 — Configure OpenCode</p>
+                    <p class="mb-3 text-xs text-muted">
+                      Add the proxy as a custom provider in
+                      <code class="rounded bg-elevated px-1 font-mono text-highlighted">~/.config/opencode/opencode.json</code>
+                      (global) or <code class="rounded bg-elevated px-1 font-mono text-highlighted">opencode.json</code> in your project root:
+                    </p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.openCodeConfig }}</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('opencode-cfg', CODE.openCodeConfig)">
+                        <UIcon :name="copiedId === 'opencode-cfg' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 4 — Run OpenCode</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>opencode</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('opencode-run', 'opencode')">
+                        <UIcon :name="copiedId === 'opencode-run' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                    <p class="mt-3 text-xs text-muted">
+                      OpenCode will use <code class="font-mono text-highlighted">devin-proxy/devin-proxy-hub</code> as the model and route every request through Devin Proxy Hub. Watch the
+                      <NuxtLink to="/sessions" class="text-primary underline-offset-2 hover:underline">Sessions</NuxtLink>
+                      page to see each Devin session appear in real time.
+                    </p>
+                  </div>
+                </div>
+              </UPageCard>
+            </div>
+
+            <!-- Oh My OpenAgent -->
+            <div v-else-if="integrationTab === 'openagent'" class="space-y-5">
+              <UPageCard variant="subtle">
+                <div class="space-y-4">
+                  <div class="flex items-start gap-3">
+                    <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <UIcon name="i-lucide-bot" class="size-4 text-primary" />
+                    </div>
+                    <div>
+                      <p class="font-semibold text-highlighted">
+                        Oh My OpenAgent integration
+                      </p>
+                      <p class="mt-1 text-sm text-muted">
+                        <a href="https://ohmyopenagent.com" target="_blank" class="text-primary underline-offset-2 hover:underline">Oh My OpenAgent</a>
+                        is an OpenCode plugin with specialized orchestration agents — Sisyphus, Hephaestus, Prometheus, and Atlas. Once the OpenCode provider is set up, point each agent at Devin Proxy Hub via the Oh My OpenAgent config.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 1 — Configure OpenCode provider first</p>
+                    <p class="text-xs text-muted">
+                      Complete the <button class="text-primary underline-offset-2 hover:underline" @click="integrationTab = 'opencode'">OpenCode integration</button> (steps 1–3) before continuing — Oh My OpenAgent inherits the provider you configure there.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 2 — Install Oh My OpenAgent</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>{{ CODE.installOpenAgent }}</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('install-openagent', CODE.installOpenAgent)">
+                        <UIcon :name="copiedId === 'install-openagent' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 3 — Override agent models</p>
+                    <p class="mb-3 text-xs text-muted">
+                      Create <code class="rounded bg-elevated px-1 font-mono text-highlighted">~/.config/opencode/oh-my-openagent.json</code>
+                      (global) or <code class="rounded bg-elevated px-1 font-mono text-highlighted">.opencode/oh-my-openagent.json</code> in your project root:
+                    </p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.openAgentConfig }}</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('openagent-cfg', CODE.openAgentConfig)">
+                        <UIcon :name="copiedId === 'openagent-cfg' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 4 — Run OpenCode</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>opencode</code></pre>
+                    </div>
+                    <p class="mt-3 text-xs text-muted">
+                      All Oh My OpenAgent orchestration agents (Sisyphus, Hephaestus, Prometheus, Atlas) and the
+                      <code class="font-mono text-highlighted">deep</code> / <code class="font-mono text-highlighted">ultrabrain</code>
+                      categories will route through Devin Proxy Hub. Every session is tracked on the
+                      <NuxtLink to="/sessions" class="text-primary underline-offset-2 hover:underline">Sessions</NuxtLink> page.
+                    </p>
+                  </div>
+                </div>
+              </UPageCard>
+            </div>
+
+            <!-- Python -->
+            <div v-else-if="integrationTab === 'python'" class="space-y-5">
+              <UPageCard variant="subtle">
+                <div class="space-y-4">
+                  <p class="text-sm text-muted">
+                    Install the official OpenAI Python client, then set <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">base_url</code> to your proxy.
+                    The <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">api_key</code> value is ignored by the proxy but must be non-empty to satisfy the client.
+                  </p>
+                  <div class="relative">
+                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>pip install openai</code></pre>
+                  </div>
+                  <div class="relative">
+                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.pythonCode }}</code></pre>
+                    <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('python-code', CODE.pythonCode)">
+                      <UIcon :name="copiedId === 'python-code' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </UPageCard>
+            </div>
+
+            <!-- Node.js -->
+            <div v-else-if="integrationTab === 'nodejs'" class="space-y-5">
+              <UPageCard variant="subtle">
+                <div class="space-y-4">
+                  <p class="text-sm text-muted">
+                    Install the official OpenAI Node.js SDK, then point <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">baseURL</code> at the proxy.
+                  </p>
+                  <div class="relative">
+                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>npm install openai</code></pre>
+                  </div>
+                  <div class="relative">
+                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.nodejsCode }}</code></pre>
+                    <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('nodejs-code', CODE.nodejsCode)">
+                      <UIcon :name="copiedId === 'nodejs-code' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </UPageCard>
+            </div>
+
+            <!-- cURL -->
+            <div v-else-if="integrationTab === 'curl'" class="space-y-5">
+              <UPageCard variant="subtle">
+                <div class="space-y-4">
+                  <p class="text-sm text-muted">
+                    No dependencies needed — just cURL. Add <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">-N</code> to enable streaming.
+                  </p>
+                  <div>
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Blocking (stream: false)</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.curlIntegration }}</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('curl-integration', CODE.curlIntegration)">
+                        <UIcon :name="copiedId === 'curl-integration' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Streaming (stream: true)</p>
+                    <div class="relative">
+                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>curl -N http://localhost:3000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"devin-proxy-hub","stream":true,"messages":[{"role":"user","content":"Fix the failing test"}]}'</code></pre>
+                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('curl-stream', `curl -N http://localhost:3000/v1/chat/completions -H &quot;Content-Type: application/json&quot; -d '{&quot;model&quot;:&quot;devin-proxy-hub&quot;,&quot;stream&quot;:true,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Fix the failing test&quot;}]}'`)">
+                        <UIcon :name="copiedId === 'curl-stream' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </UPageCard>
+            </div>
+          </section>
 
           <!-- ── Introduction ──────────────────────────────────────────── -->
           <section id="docs-intro">
@@ -1373,175 +1637,7 @@ console.log(response.choices[0].message.content)`,
             </div>
           </section>
 
-          <!-- ── Integrations ───────────────────────────────────────────── -->
-          <section id="docs-integrations">
-            <h2 class="mb-5 text-lg font-bold text-highlighted">
-              Integrations
-            </h2>
-            <p class="mb-6 text-sm text-muted">
-              Because the proxy is fully OpenAI-compatible, it works with any client that supports a custom base URL.
-            </p>
 
-            <!-- Tab bar -->
-            <div class="mb-4 flex gap-1 overflow-x-auto rounded-xl border border-default bg-elevated/30 p-1">
-              <button
-                v-for="tab in ([
-                  { id: 'opencode', label: 'OpenCode', icon: 'i-simple-icons-openai' },
-                  { id: 'python', label: 'Python', icon: 'i-simple-icons-python' },
-                  { id: 'nodejs', label: 'Node.js', icon: 'i-simple-icons-nodedotjs' },
-                  { id: 'curl', label: 'cURL', icon: 'i-lucide-terminal' }
-                ] as const)"
-                :key="tab.id"
-                class="flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-                :class="integrationTab === tab.id
-                  ? 'bg-default text-highlighted shadow-sm ring-1 ring-default'
-                  : 'text-muted hover:text-default'"
-                @click="integrationTab = tab.id"
-              >
-                <UIcon :name="tab.icon" class="size-3.5" />
-                {{ tab.label }}
-              </button>
-            </div>
-
-            <!-- OpenCode -->
-            <div v-if="integrationTab === 'opencode'" class="space-y-5">
-              <UPageCard variant="subtle">
-                <div class="space-y-4">
-                  <div class="flex items-start gap-3">
-                    <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <UIcon name="i-lucide-book-open" class="size-4 text-primary" />
-                    </div>
-                    <div>
-                      <p class="font-semibold text-highlighted">
-                        OpenCode integration
-                      </p>
-                      <p class="mt-1 text-sm text-muted">
-                        <a href="https://opencode.ai" target="_blank" class="text-primary underline-offset-2 hover:underline">OpenCode</a>
-                        is an AI coding assistant that uses any OpenAI-compatible model. Point it at the proxy to use Devin as the backend.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 1 — Start the proxy</p>
-                    <div class="relative">
-                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>pnpm dev  # or: PORT=3000 node .output/server/index.mjs</code></pre>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 2 — Add Devin API key in the dashboard</p>
-                    <p class="mb-3 text-xs text-muted">
-                      Open <code class="rounded bg-elevated px-1 font-mono text-highlighted">http://localhost:3000/keys</code>
-                      and add your Devin API key and org ID.
-                    </p>
-                  </div>
-
-                  <div>
-                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 3 — Configure OpenCode</p>
-                    <p class="mb-3 text-xs text-muted">
-                      Add or update <code class="rounded bg-elevated px-1 font-mono text-highlighted">opencode.json</code> in your project root
-                      (or <code class="rounded bg-elevated px-1 font-mono text-highlighted">~/.config/opencode/config.json</code> for global config):
-                    </p>
-                    <div class="relative">
-                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.openCodeConfig }}</code></pre>
-                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('opencode-cfg', CODE.openCodeConfig)">
-                        <UIcon :name="copiedId === 'opencode-cfg' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Step 4 — Run OpenCode</p>
-                    <div class="relative">
-                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>opencode</code></pre>
-                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('opencode-run', 'opencode')">
-                        <UIcon :name="copiedId === 'opencode-run' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                      </button>
-                    </div>
-                    <p class="mt-3 text-xs text-muted">
-                      OpenCode will pick up the config, use <code class="font-mono text-highlighted">devin-proxy-hub</code> as the model,
-                      and route every request through Devin Proxy Hub. Watch the
-                      <NuxtLink to="/sessions" class="text-primary underline-offset-2 hover:underline">Sessions</NuxtLink>
-                      page to see each Devin session appear in real time.
-                    </p>
-                  </div>
-                </div>
-              </UPageCard>
-            </div>
-
-            <!-- Python -->
-            <div v-else-if="integrationTab === 'python'" class="space-y-5">
-              <UPageCard variant="subtle">
-                <div class="space-y-4">
-                  <p class="text-sm text-muted">
-                    Install the official OpenAI Python client, then set <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">base_url</code> to your proxy.
-                    The <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">api_key</code> value is ignored by the proxy but must be non-empty to satisfy the client.
-                  </p>
-                  <div class="relative">
-                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>pip install openai</code></pre>
-                  </div>
-                  <div class="relative">
-                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.pythonCode }}</code></pre>
-                    <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('python-code', CODE.pythonCode)">
-                      <UIcon :name="copiedId === 'python-code' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                    </button>
-                  </div>
-                </div>
-              </UPageCard>
-            </div>
-
-            <!-- Node.js -->
-            <div v-else-if="integrationTab === 'nodejs'" class="space-y-5">
-              <UPageCard variant="subtle">
-                <div class="space-y-4">
-                  <p class="text-sm text-muted">
-                    Install the official OpenAI Node.js SDK, then point <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">baseURL</code> at the proxy.
-                  </p>
-                  <div class="relative">
-                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-sm text-neutral-100 dark:bg-neutral-950"><code>npm install openai</code></pre>
-                  </div>
-                  <div class="relative">
-                    <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.nodejsCode }}</code></pre>
-                    <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('nodejs-code', CODE.nodejsCode)">
-                      <UIcon :name="copiedId === 'nodejs-code' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                    </button>
-                  </div>
-                </div>
-              </UPageCard>
-            </div>
-
-            <!-- cURL -->
-            <div v-else-if="integrationTab === 'curl'" class="space-y-5">
-              <UPageCard variant="subtle">
-                <div class="space-y-4">
-                  <p class="text-sm text-muted">
-                    No dependencies needed — just cURL. Add <code class="rounded bg-elevated px-1.5 font-mono text-xs text-highlighted">-N</code> to enable streaming.
-                  </p>
-                  <div>
-                    <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Blocking (stream: false)</p>
-                    <div class="relative">
-                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>{{ CODE.curlIntegration }}</code></pre>
-                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('curl-integration', CODE.curlIntegration)">
-                        <UIcon :name="copiedId === 'curl-integration' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Streaming (stream: true)</p>
-                    <div class="relative">
-                      <pre class="overflow-x-auto rounded-xl bg-neutral-900 px-5 py-4 font-mono text-xs text-neutral-100 leading-relaxed dark:bg-neutral-950"><code>curl -N http://localhost:3000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"model":"devin-proxy-hub","stream":true,"messages":[{"role":"user","content":"Fix the failing test"}]}'</code></pre>
-                      <button class="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-neutral-100" @click="copyText('curl-stream', `curl -N http://localhost:3000/v1/chat/completions -H &quot;Content-Type: application/json&quot; -d '{&quot;model&quot;:&quot;devin-proxy-hub&quot;,&quot;stream&quot;:true,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Fix the failing test&quot;}]}'`)">
-                        <UIcon :name="copiedId === 'curl-stream' ? 'i-lucide-check' : 'i-lucide-copy'" class="size-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </UPageCard>
-            </div>
-          </section>
         </div>
       </div>
     </template>
